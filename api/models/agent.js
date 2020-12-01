@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const agentScheme = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    name: String,
-    income: Number
+    name: {type: String, required: true},
+    income: {type: Number, required: true}
 });
 
 module.exports = mongoose.model('Agent', agentScheme);

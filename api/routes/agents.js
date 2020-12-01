@@ -34,14 +34,37 @@ router.get('/:agentId', (req, res, next) => {
 });
 
 router.patch('/:agentId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Updated agent!'
+    const id = req.params.agentId;
+    const updateOps = {};
+    for(const ops of req.body){ 
+        updateOps[ops.propName] = ops.value; 
+    }
+    Agent.update({_id: id}, { $set: updateOps })
+    .exec()
+    .then(result =>{
+        console.log(result);
+        res.status(200).json(result);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 
 router.delete('/:agentId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Deleted  agent!'
+    const id = req.params.agentId
+    Agent.remove({_id: id})
+    .exec()
+    .then(result => {
+        res.status(200).json(result);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 
