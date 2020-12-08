@@ -13,7 +13,11 @@ mongoose.connect(
         { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
+mongoose.Promise = global.Promise;
+
 app.use(morgan('dev'));
+//made uploads folder public in order to make it accessible for browser
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
