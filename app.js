@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose'); 
 
 const agentRoutes = require('./api/routes/agents');
+const userRoutes = require("./api/routes/user");
 
 mongoose.connect(
     'mongodb+srv://admin:' + 
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 
 //routes which should handle requests
 app.use('/agents', agentRoutes);
+app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not found!');
