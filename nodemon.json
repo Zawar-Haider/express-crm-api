@@ -1,7 +1,7 @@
 {
    "env": {
-        "MONGO_ATLAS_PW": "adminecofin"
-
+        "MONGO_ATLAS_PW": "adminecofin",
+        "JWT_KEY": "secret" 
    }
 
 }

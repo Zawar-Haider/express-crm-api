@@ -1,8 +1,9 @@
 const { request } = require('express');
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const multer = require('multer');
+const express     = require('express');
+const router      = express.Router();
+const mongoose    = require('mongoose');
+const multer      = require('multer');
+const checkAuth   = require('../middleware/check-auth');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -68,7 +69,11 @@ router.get('/', (req, res, next) => {
         }); 
 });
 
-router.post('/', upload.single('agentImage'), (req, res, next) => {
+router.post('/', checkAuth, upload.single('agentImage'), (req, res, next) => {
+        //       agent.save()
+        //      .then(result => res.status(200).json(result))
+        //      .catch(err => console.log(err));
+    
     console.log(req.file);
     const agent = new Agent({
         _id: new mongoose.Types.ObjectId(),
@@ -76,11 +81,6 @@ router.post('/', upload.single('agentImage'), (req, res, next) => {
         income: req.body.income,
         agentImage: req.file.path
     });
-
-  //       agent.save()
-  //      .then(result => res.status(200).json(result))
-  //      .catch(err => console.log(err));
-    
     agent
         .save()
         .then(result => {
@@ -139,7 +139,7 @@ router.get('/:agentId', (req, res, next) => {
     });
 });
 
-router.patch('/:agentId', (req, res, next) => {
+router.patch('/:agentId', checkAuth, (req, res, next) => {
     const id = req.params.agentId;
     const updateOps = {};
     for(const ops of req.body){ 
@@ -165,7 +165,7 @@ router.patch('/:agentId', (req, res, next) => {
     });
 });
 
-router.delete('/:agentId', (req, res, next) => {
+router.delete('/:agentId', checkAuth, (req, res, next) => {
     const id = req.params.agentId
     Agent.remove({_id: id})
     .exec()
